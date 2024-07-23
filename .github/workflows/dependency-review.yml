@@ -41,5 +41,5 @@ jobs:
         docker build -t hyper .
         docker stop hyper || true
         docker rm hyper || true
-        docker run -d --name hyper -p 1381:1381 hyp
+        docker run -d --name hyper -p 1381:1381 hyper
         EOF
