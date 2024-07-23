@@ -30,7 +30,7 @@ jobs:
         VPS_USER: ${{ secrets.VPS_USER }}
       run: |
         ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
-        rm -rf faired
+        rm -rf hyper
         git config --global user.email yashoswal18@gmail.com 
         git config --global user.name mergebot
         git clone https://github.com/Itzmeproman/hyper.git
@@ -39,7 +39,7 @@ jobs:
         git checkout main
         git pull origin main
         docker build -t hyper .
-        docker stop hyp || true
-        docker rm hyp || true
-        docker run -d --name hyp -p 1381:1381 hyp
+        docker stop hyper || true
+        docker rm hyper || true
+        docker run -d --name hyper -p 1381:1381 hyp
         EOF
