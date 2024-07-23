@@ -1,20 +1,39 @@
-# Dependency Review Action
-#
-# This Action will scan dependency manifest files that change as part of a Pull Request, surfacing known-vulnerable versions of the packages declared or updated in the PR. Once installed, if the workflow run is marked as required, PRs introducing known-vulnerable packages will be blocked from merging.
-#
-# Source repository: https://github.com/actions/dependency-review-action
-# Public documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
-name: 'Dependency Review'
-on: [pull_request]
+name: Deploy to VPS
 
-permissions:
-  contents: read
+on:
+  push:
+    branches:
+      - 2nd
 
 jobs:
-  dependency-review:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Checkout Repository'
-        uses: actions/checkout@v3
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: SSH and deploy
+      env:
+        VPS_IP: ${{ secrets.VPS_IP }}
+        VPS_USER: ${{ secrets.VPS_USER }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
+        rm -rf hyper
+        git config --global user.email yashoswal18@gmail.com 
+        git config --global user.name mergebot
+        git clone https://github.com/Itzmeproman/hyper.git
+        cd hyper
+        git fetch origin
+        git checkout 2nd
+        git pull origin 2nd
+        docker build -t 2nd .
+        docker stop hyper2 || true
+        docker rm hyper2 || true
+        docker run -d --name hyper2 -p 1881:1881 hyper
+        EOF
