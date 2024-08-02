@@ -32,8 +32,8 @@ DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://heeradevi817100:heeradevi
 DB_NAME = os.environ.get("DATABASE_NAME", "heeradevi817100")
 
 #force sub channel id, if you want enable force sub
-FORCESUB_CHANNEL = int(os.environ.get("FORCESUB_CHANNEL", "-1002229001423"))
-FORCESUB_CHANNEL2 = int(os.environ.get("FORCESUB_CHANNEL2", "-1001913585535"))
+FORCESUB_CHANNEL = int(os.environ.get("FORCESUB_CHANNEL", "-1001913585535"))
+FORCESUB_CHANNEL2 = int(os.environ.get("FORCESUB_CHANNEL2", "-1001869754827"))
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
